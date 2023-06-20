@@ -1,11 +1,7 @@
 const express = require('express')
+// Import and require mysql2
 const mysql = require('mysql2')
 const inquirer = require('inquirer')
-
-
-// Import and require mysql2
-const mysql = require('mysql2');
-
 const PORT = process.env.PORT || 3000;
 const app = express();
 
@@ -26,21 +22,20 @@ const db = mysql.createConnection(
 
 inquirer
   .prompt([
-   {
-    type: 'list',
-    message: '',
-    name: '',
-    choices: ['']
-   },
-   {
-   type: '',
-   message: '',
-   name: '',
-   choices: ['']
-  },
+    {
+      type: 'list',
+      message: 'What would you like to do?',
+      name: 'options',
+      choices: ['View All Employees', 'Add Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments', 'Add Department' ]
+    },
+    {
+      type: 'list',
+      message: '',
+      name: '',
+      choices: ['']
+    },
   ])
-  .then((answers) => {
-    // Use user feedback for... whatever!!
+  .then((answers) => { console.log(answers)
   })
   .catch((error) => {
     if (error.isTtyError) {
