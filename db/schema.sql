@@ -1,4 +1,5 @@
 DROP DATABASE IF EXISTS employee_cms;
+
 CREATE DATABASE employee_cms;
 
 USE employee_cms;
@@ -20,7 +21,7 @@ CREATE TABLE role(
     FOREIGN KEY (department_id) REFERENCES department(id) ON DELETE SET NULL
 );
 
-CREATE TABLE employee(
+CREATE TABLE employees(
     id INT,
     first_name VARCHAR(30),
     -- to hold employee first name
@@ -33,4 +34,3 @@ CREATE TABLE employee(
     -- to hold reference to another employee that is the manager of the current employee (null if the employee has no manager)
     FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );
-
