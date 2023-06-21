@@ -4,7 +4,7 @@ VALUES (001, "Leadership"),
        (003, "Human Resources"),
        (004, "Guest Experience");
 
-INSERT INTO role (id, title, salary, department_id)
+INSERT INTO roles (id, title, salary, department_id)
 VALUES (001, "Store Manager", 110000, 001),
        (002, "Operations Manager", 75000, 003),
        (003, "Guest Experience Manager", 75000,004),
@@ -13,8 +13,9 @@ VALUES (001, "Store Manager", 110000, 001),
 
 
 INSERT INTO employees (id, first_name, last_name, role_id, manager_id)
-VALUES (001, "Chelsea", "Cusmano", 001),
-       (002, "John", "Doe", 005, 004),
-       (003, "Hillary", "Chocko", 003, 001),
-       (004, "Elena", "Hunter", 002, 001);
-       (005, "Jack", "Joe", 004, 004);
+VALUES (1, "Chelsea", "Cusmano", 001, null),
+       (2, "Hillary", "Chocko", 003, 001),
+       (3, "Elena", "Hunter", 002, 001),
+       (4, "Jack", "Joe", 004, 003),
+       (5, "John", "Doe", 005, 004);
+
