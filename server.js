@@ -45,6 +45,9 @@ function promptUser() {
         case 'View All Roles':
           viewAllRoles()
           break;
+        case 'Add Role':
+          addRole()
+          break;
         case 'View All Departments':
           viewAllDepartments()
           break;
@@ -61,6 +64,35 @@ function promptUser() {
         // Something else went wrong
       }
     });
+}
+
+function addRole() {
+  db.query('SELECT * FROM department', function (err, results) {
+    if (err) {
+      console.log(err)
+      return promptUser()
+    }
+    inquirer.prompt(
+      [
+        {
+          type: 'input',
+          name: 'title',
+          message: 'Whats the title of the role?'
+        },
+        {
+          type: 'input',
+          name: 'salary',
+          message: 'Whats the salary for this role?'
+        }
+      ]
+    ).then((answers) => {
+      console.log('Role added!' + answers.deptId)
+      let title = answers.title; let salary = answers.salary
+      db.query(`INSERT INTO roles (title, salary) VALUES ('${title}', '${salary}')`, function (err, results) {
+        (err) ? console.log(err) : console.table(`Added: ${title}`), viewAllRoles(), promptUser()
+      })
+    })
+  })
 }
 
 function addEmployee() {
@@ -96,7 +128,7 @@ function addEmployee() {
       console.log('Employee added!' + choiceResponse.roleId)
       let roleId = choiceResponse.roleId; let employeeName = choiceResponse.firstName; let employeeLast = choiceResponse.lastName
       db.query(`INSERT INTO employees (first_name, last_name, role_id) VALUES ('${employeeName}', '${employeeLast}', ${roleId})`, function (err, results) {
-        (err) ? console.log(err) : console.table(`Added: ${employeeName}`),viewAllEmployees(), promptUser()
+        (err) ? console.log(err) : console.table(`Added: ${employeeName}`), viewAllEmployees(), promptUser()
       })
     })
   })
