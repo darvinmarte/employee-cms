@@ -51,6 +51,9 @@ function promptUser() {
         case 'View All Departments':
           viewAllDepartments()
           break;
+        case 'Add Department':
+          addDepartment()
+          break;
         default:
           console.log('broken')
           break;
@@ -65,6 +68,27 @@ function promptUser() {
       }
     });
 }
+
+
+function addDepartment() {
+  inquirer.prompt(
+    [
+      {
+      type: 'input',
+      name: 'departmentName',
+      message: 'What is the name of the department you want to add?'
+      }
+    ]
+  )
+  .then((answers) => {
+    console.log('Department added!')
+    let departmentName = answers.departmentName; 
+  db.query(`INSERT INTO department (name) VALUES ('${departmentName}')`, function (err, results) {
+    (err) ? console.log(err) : console.table(`Added: ${departmentName}`), viewAllDepartments(), promptUser()
+  })
+})
+}
+
 
 function addRole() {
   db.query('SELECT * FROM department', function (err, results) {
