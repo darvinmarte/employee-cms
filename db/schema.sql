@@ -5,13 +5,13 @@ CREATE DATABASE employee_cms;
 USE employee_cms;
 
 CREATE TABLE department (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     name VARCHAR(30)
     -- to hold department name
 );
 
 CREATE TABLE roles (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     title VARCHAR(30),
     -- to hold role title
     salary DECIMAL,
@@ -22,7 +22,7 @@ CREATE TABLE roles (
 );
 
 CREATE TABLE employees (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     first_name VARCHAR(30),
     -- to hold employee first name
     last_name VARCHAR(30),

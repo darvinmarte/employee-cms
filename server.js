@@ -34,6 +34,7 @@ function promptUser() {
     .then((answers) => {
       console.log(answers)
       const choice = answers.options
+      // case switch to prompt user depending on choice 
       switch (choice) {
         case 'View All Employees':
           viewAllEmployees()
@@ -94,8 +95,8 @@ function addEmployee() {
     ).then((choiceResponse) => {
       console.log('Employee added!' + choiceResponse.roleId)
       let roleId = choiceResponse.roleId; let employeeName = choiceResponse.firstName; let employeeLast = choiceResponse.lastName
-      db.query(`INSERT INTO employees first_name, last_name, role_id VALUES ('${employeeName}', '${employeeLast}', ${roleId})`, function (err, results) {
-        (err) ? console.log(err) : console.table(results), promptUser()
+      db.query(`INSERT INTO employees (first_name, last_name, role_id) VALUES ('${employeeName}', '${employeeLast}', ${roleId})`, function (err, results) {
+        (err) ? console.log(err) : console.table(`Added: ${employeeName}`),viewAllEmployees(), promptUser()
       })
     })
   })
