@@ -24,6 +24,7 @@ const db = mysql.createConnection(
 function promptUser() {
   inquirer
     .prompt([
+      // first question asked to user then returns a switch case depending on users answer
       {
         type: 'list',
         message: 'What would you like to do?',
@@ -55,7 +56,7 @@ function promptUser() {
           addDepartment()
           break;
         default:
-          console.log('broken')
+          console.log('Something went wrong!')
           break;
       }
 
@@ -69,24 +70,26 @@ function promptUser() {
     });
 }
 
-
+// function to add department
 function addDepartment() {
   inquirer.prompt(
     [
       {
-      type: 'input',
-      name: 'departmentName',
-      message: 'What is the name of the department you want to add?'
+        type: 'input',
+        name: 'departmentName',
+        message: 'What is the name of the department you want to add?'
       }
     ]
   )
-  .then((answers) => {
-    console.log('Department added!')
-    let departmentName = answers.departmentName; 
-  db.query(`INSERT INTO department (name) VALUES ('${departmentName}')`, function (err, results) {
-    (err) ? console.log(err) : console.table(`Added: ${departmentName}`), viewAllDepartments(), promptUser()
-  })
-})
+    .then((answers) => {
+      console.log('Department added!')
+      //variable takes deparntment name from user answer and inserts it into table
+      let departmentName = answers.departmentName;
+      db.query(`INSERT INTO department (name) VALUES ('${departmentName}')`, function (err, results) {
+        // inserts name user entered into department table under key name
+        (err) ? console.log(err) : console.table(`Added: ${departmentName}`), viewAllDepartments(), promptUser()
+      })
+    })
 }
 
 
@@ -157,19 +160,19 @@ function addEmployee() {
     })
   })
 }
-
+// shows all employees
 function viewAllEmployees() {
   db.query('SELECT * FROM employees', function (err, results) {
     (err) ? console.log(err) : console.table(results), promptUser()
   })
 }
-
+// shows all roles
 function viewAllRoles() {
   db.query('SELECT * FROM roles', function (err, results) {
     (err) ? console.log(err) : console.table(results), promptUser()
   })
 }
-
+// shows all departments
 function viewAllDepartments() {
   db.query('SELECT * FROM department', function (err, results) {
     (err) ? console.log(err) : console.table(results), promptUser()
