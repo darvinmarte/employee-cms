@@ -232,27 +232,6 @@ function updateEmployeeRole() {
   });
 }
 
-function promptUser() {
-  inquirer
-    .prompt([
-      {
-        type: 'list',
-        message: 'What would you like to do?',
-        name: 'options',
-        choices: ['View All Employees', 'Add Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments', 'Add Department']
-      }
-    ])
-    .then((answers) => {
-      switch (choice) {
-        case 'Update Employee Role':
-          updateEmployeeRole();
-          break;
-      }
-    })
-    .catch((error) => {
-    });
-}
-
 // shows all employees
 function viewAllEmployees() {
   db.query('SELECT * FROM employees', function (err, results) {
