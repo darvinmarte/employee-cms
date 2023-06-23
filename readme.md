@@ -23,6 +23,7 @@ so that they can organize and plan thier business accordingly.
 
 This applciation walkthrough video is provided below
 
+https://drive.google.com/file/d/1rFzU6NQ-52QpOyISnjpep_U4TdBhLHR-/view 
 
 ## Contributions
 
