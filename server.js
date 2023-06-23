@@ -49,6 +49,9 @@ function promptUser() {
         case 'Add Role':
           addRole()
           break;
+        case 'Update Employee Role':
+          updateEmployeeRole()
+          break;
         case 'View All Departments':
           viewAllDepartments()
           break;
@@ -99,6 +102,9 @@ function addRole() {
       console.log(err)
       return promptUser()
     }
+    const existDepart = results.map(deptarment => ({
+      value: deptarment.id,
+      name: deptarment.name}))
     inquirer.prompt(
       [
         {
@@ -111,11 +117,18 @@ function addRole() {
           name: 'salary',
           message: 'Whats the salary for this role?'
         }
+      ,
+      {
+        type: 'list',
+        name: 'department',
+        message: 'What department does this belong to?',
+        choices: existDepart
+      }
       ]
     ).then((answers) => {
-      console.log('Role added!' + answers.deptId)
-      let title = answers.title; let salary = answers.salary
-      db.query(`INSERT INTO roles (title, salary) VALUES ('${title}', '${salary}')`, function (err, results) {
+      console.log('Role added!' + answers.department)
+      let title = answers.title; let salary = answers.salary; let department = answers.department
+      db.query(`INSERT INTO roles (title, salary, department_id) VALUES ('${title}', '${salary}', '${department}')`, function (err, results) {
         (err) ? console.log(err) : console.table(`Added: ${title}`), viewAllRoles(), promptUser()
       })
     })
@@ -149,7 +162,7 @@ function addEmployee() {
           name: 'roleId',
           message: 'What role would you like?',
           choices: existRole
-        },
+        }
       ]
     ).then((choiceResponse) => {
       console.log('Employee added!' + choiceResponse.roleId)
@@ -160,6 +173,86 @@ function addEmployee() {
     })
   })
 }
+
+
+function updateEmployeeRole() {
+  db.query('SELECT * FROM employees', function (err, employees) {
+    if (err) {
+      console.log(err);
+      return promptUser();
+    }
+
+    const existEmployees = employees.map(employee => ({
+      value: employee.id,
+      name: `${employee.first_name} ${employee.last_name}`
+    }));
+
+    db.query('SELECT * FROM roles', function (err, roles) {
+      if (err) {
+        console.log(err);
+        return promptUser();
+      }
+
+      const existRoles = roles.map(role => ({
+        value: role.id,
+        name: role.title
+      }));
+
+      inquirer.prompt([
+        {
+          type: 'list',
+          name: 'employeeId',
+          message: 'Which employee do you want to update?',
+          choices: existEmployees
+        },
+        {
+          type: 'list',
+          name: 'roleId',
+          message: 'What is the new role for the employee?',
+          choices: existRoles
+        }
+      ]).then((answers) => {
+        console.log('Employee role updated!');
+        let employeeId = answers.employeeId;
+        let roleId = answers.roleId;
+
+        db.query(
+          `UPDATE employees SET role_id = ${roleId} WHERE id = ${employeeId}`,function (err, results) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(`Updated employee's role.`);
+              viewAllEmployees();
+            }
+            promptUser();
+          }
+        );
+      });
+    });
+  });
+}
+
+function promptUser() {
+  inquirer
+    .prompt([
+      {
+        type: 'list',
+        message: 'What would you like to do?',
+        name: 'options',
+        choices: ['View All Employees', 'Add Employee', 'Update Employee Role', 'View All Roles', 'Add Role', 'View All Departments', 'Add Department']
+      }
+    ])
+    .then((answers) => {
+      switch (choice) {
+        case 'Update Employee Role':
+          updateEmployeeRole();
+          break;
+      }
+    })
+    .catch((error) => {
+    });
+}
+
 // shows all employees
 function viewAllEmployees() {
   db.query('SELECT * FROM employees', function (err, results) {
